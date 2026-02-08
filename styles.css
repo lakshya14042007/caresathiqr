@@ -1534,3 +1534,183 @@ body::before {
     font-size: 12px;
   }
 }
+
+
+/* ================================
+   COMPLETE MOBILE RESPONSIVE FIX
+   ================================ */
+
+/* ---------- MOBILE NAVBAR ---------- */
+@media (max-width: 768px) {
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 36, 99, 0.98);
+    flex-direction: column;
+    display: none;
+  }
+
+  .nav-menu.active {
+    display: flex;
+  }
+
+  .nav-menu li {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav-link {
+    padding: 16px;
+    text-align: center;
+    font-size: 1.1rem;
+    display: block;
+  }
+
+  .nav-auth {
+    display: none;
+  }
+}
+
+/* ---------- HERO SECTION ---------- */
+@media (max-width: 1024px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.4rem;
+  }
+
+  .hero-description {
+    font-size: 1.05rem;
+  }
+
+  .hero-image {
+    height: auto;
+    min-height: 320px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .floating-card {
+    position: relative;
+    margin: 20px auto;
+    animation: none;
+  }
+
+  .card-1,
+  .card-2,
+  .card-3 {
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    transform: none;
+  }
+}
+
+/* ---------- BUTTONS ---------- */
+@media (max-width: 480px) {
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* ---------- FEATURES & PRICING ---------- */
+@media (max-width: 768px) {
+  .features-grid,
+  .pricing-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-card {
+    padding: 30px 20px;
+  }
+
+  .price {
+    font-size: 2.8rem;
+  }
+
+  .pricing-btn {
+    font-size: 1rem;
+  }
+}
+
+/* ---------- FORMS ---------- */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 30px 22px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 16px;
+    font-size: 1rem;
+  }
+
+  .submit-btn {
+    padding: 16px;
+  }
+}
+
+/* ---------- CONTACT ---------- */
+@media (max-width: 768px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- FOOTER ---------- */
+@media (max-width: 600px) {
+  .footer-content {
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+/* ---------- USER INFO ---------- */
+@media (max-width: 600px) {
+  .user-info {
+    padding: 4px 10px;
+    gap: 8px;
+  }
+
+  .logout-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ---------- PERFORMANCE BOOST ---------- */
+@media (max-width: 600px) {
+  body::before {
+    opacity: 0.3;
+  }
+
+  .feature-card:hover,
+  .pricing-card:hover,
+  .step-card:hover {
+    transform: none;
+  }
+}
