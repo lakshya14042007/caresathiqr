@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pet QR Details</title>
+</head>
+<body>
+
+<h2>Pet Information</h2>
+<div id="data">Loading...</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDWfh7DHNb4Pn7cbquYUNRDK65zcxl5u04",
+  authDomain: "caresathiqr-55ae5.firebaseapp.com",
+  projectId: "caresathiqr-55ae5",
+  storageBucket: "caresathiqr-55ae5.firebasestorage.app",
+  messagingSenderId: "899952960842",
+  appId: "1:899952960842:web:81df701eb54c1255794db3",
+  measurementId: "G-S76S4KDYCX"
+};
+
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const ref = doc(db, "petQR", id);
+const snap = await getDoc(ref);
+
+if (snap.exists()) {
+  const d = snap.data();
+  document.getElementById("data").innerHTML = `
+    <p><b>Pet Name:</b> ${d.petName}</p>
+    <p><b>Animal:</b> ${d.animalType}</p>
+    <p><b>Breed:</b> ${d.breed}</p>
+    <p><b>Owner:</b> ${d.ownerName}</p>
+    <p><b>Contact:</b> ${d.ownerContact}</p>
+    <p><b>Medical:</b> ${d.medicalInfo}</p>
+  `;
+} else {
+  document.getElementById("data").innerText = "Invalid QR Code";
+}
+</script>
+
+</body>
+</html>
