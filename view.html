@@ -5,26 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet QR Details</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
-        .container { max-width: 500px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px; box-shadow: 2px 2px 12px rgba(0,0,0,0.1); }
-        h2 { color: #333; text-align: center; }
-        b { color: #555; }
-        .error { color: red; font-weight: bold; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f4f7f6; }
+        .container { max-width: 450px; margin: 50px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid #007bff; }
+        h2 { color: #007bff; text-align: center; margin-bottom: 25px; }
+        .info-row { margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        b { color: #333; display: inline-block; width: 120px; }
+        .error { color: #d9534f; background: #f9ebeb; padding: 10px; border-radius: 5px; text-align: center; }
+        .loading { text-align: center; color: #666; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>🐾 Pet Information</h2>
-    <div id="data">Loading information...</div>
+    <div id="data" class="loading">Fetching details from database...</div>
 </div>
 
 <script type="module">
-    // Firebase SDK imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 1. Firebase Config (Wahi jo admin page mein tha)
     const firebaseConfig = {
         apiKey: "AIzaSyDWfh7DHNb4Pn7cbquYUNRDK65zcxl5u04",
         authDomain: "caresathiqr-55ae5.firebaseapp.com",
@@ -35,46 +35,49 @@
         measurementId: "G-S76S4KDYCX"
     };
 
-    // 2. Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 3. Fetch Data Function
     async function fetchPetData() {
         const dataDiv = document.getElementById("data");
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
 
+        console.log("Searching for ID:", id); // Debugging line
+
         if (!id) {
-            dataDiv.innerHTML = "<p class='error'>Error: No ID found in URL!</p>";
+            dataDiv.className = "error";
+            dataDiv.innerHTML = "❌ No Pet ID provided in the link.";
             return;
         }
 
         try {
-            // "petQR" aapke collection ka naam hai
-            const ref = doc(db, "petQR", id);
+            // Check if collection name is correct (Case Sensitive!)
+            const ref = doc(db, "petQR", id); 
             const snap = await getDoc(ref);
 
             if (snap.exists()) {
                 const d = snap.data();
+                dataDiv.className = ""; // Remove loading class
                 dataDiv.innerHTML = `
-                    <p><b>Pet Name:</b> ${d.petName || 'N/A'}</p>
-                    <p><b>Animal:</b> ${d.animalType || 'N/A'}</p>
-                    <p><b>Breed:</b> ${d.breed || 'N/A'}</p>
-                    <p><b>Owner:</b> ${d.ownerName || 'N/A'}</p>
-                    <p><b>Contact:</b> <a href="tel:${d.ownerContact}">${d.ownerContact || 'N/A'}</a></p>
-                    <p><b>Medical:</b> ${d.medicalInfo || 'No history'}</p>
+                    <div class="info-row"><b>Pet Name:</b> ${d.petName || 'N/A'}</div>
+                    <div class="info-row"><b>Animal:</b> ${d.animalType || 'N/A'}</div>
+                    <div class="info-row"><b>Breed:</b> ${d.breed || 'N/A'}</div>
+                    <div class="info-row"><b>Owner:</b> ${d.ownerName || 'N/A'}</div>
+                    <div class="info-row"><b>Contact:</b> <a href="tel:${d.ownerContact}">${d.ownerContact || 'N/A'}</a></div>
+                    <div class="info-row"><b>Medical:</b> ${d.medicalInfo || 'No specific info'}</div>
                 `;
             } else {
-                dataDiv.innerHTML = "<p class='error'>Pet record not found (Invalid ID).</p>";
+                dataDiv.className = "error";
+                dataDiv.innerHTML = "❌ Pet Record Not Found.<br><small>Check if Document ID is correct in Firestore.</small>";
             }
         } catch (error) {
-            console.error("Error fetching document:", error);
-            dataDiv.innerHTML = "<p class='error'>Error loading data. Check console.</p>";
+            console.error("Firestore Error:", error);
+            dataDiv.className = "error";
+            dataDiv.innerHTML = `⚠️ Database Error: ${error.message}`;
         }
     }
 
-    // Run the function
     fetchPetData();
 </script>
 
